@@ -1,0 +1,7 @@
+docker run --rm -d -p 443:443 --name nginx-cont  nginx-try:latest
+
+docker run -it --rm --name nginx-cont -p 443:443 nginx-try:latest /bin/bash
+
+//usare docker come debugger
+apt update
+apt install -y docker.io
