@@ -1,0 +1,33 @@
+#version: '3.8'
+services:
+  nginx:
+    container_name: nginx-cont
+    image: nginx-try:packaged
+    build:
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
+    ports: 
+      - "443:443"
+    networks:
+      - net
+  wordpress:
+    container_name: wp-cont
+    image: wp-try:packaged
+    build:
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
+    networks:
+      - net
+
+  mariadb:
+    container_name: mdb-cont
+    image: mdb-try:packaged
+    build:
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
