@@ -10,4 +10,4 @@ if [ ! -f /etc/nginx/ssl/self-signed.crt ]; then
         -subj "/C=IT/ST=Toscana/L=Firenze/O=42 Firenze/OU=IT/CN=cazerini.42.fr/emailAddress=cazerini@student.42firenze.it"
 fi
 
-nginx -g 'daemon off;'
+exec nginx -g 'daemon off;'

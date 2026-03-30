@@ -5,7 +5,13 @@ EXPOSE 443
 RUN apt-get update && \
     apt-get install nginx -y openssl && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
-    
+  
+RUN apt-get update && \
+    apt-get install -y docker.io && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# RUN apk update && apk add --no-cache docker-cli    
+
 RUN mkdir -p /etc/nginx/ssl 
 
 #RUN openssl req -newkey rsa:2048 -x509 -sha256 -days 365 -nodes \

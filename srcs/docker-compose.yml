@@ -1,4 +1,4 @@
-version: '3.8'
+#version: '3.8'
 services:
   nginx:
     container_name: nginx-cont
@@ -8,18 +8,58 @@ services:
       dockerfile: Dockerfile
     ports: 
       - "443:443"
-    expose:
-      - "9000"
+    depends_on:
+      - wordpress
     networks:
-      - net
+      - inception
+    volumes:
+      - wordpress_data:/var/www/html
+
+  mariadb:
+    container_name: mdb-cont
+    image: mdb-try:packaged
+    build:
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: my_database
+      MYSQL_USER: my_user
+      MYSQL_PASSWORD: my_password
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - inception
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
   wordpress:
     container_name: wp-cont
     image: wp-try:packaged
     build:
-      contex: ./requirements/nginx
+      context: ./requirements/wordpress
       dockerfile: Dockerfile
+    environment:
+      WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: example
     networks:
-      - net
+      - inception
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    volumes:
+      - wordpress_data:/var/www/html
+
 networks:
-  net:
+  inception:
     driver: bridge
+
+volumes:
+  wordpress_data:
+  mariadb_data:
