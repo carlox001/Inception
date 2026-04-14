@@ -1,4 +1,6 @@
 #!/bin/bash
+mkdir -p /run/mysqld
+chown mysql:mysql /run/mysqld
 set -e
 
 # Avvia il server MariaDB in background
@@ -17,4 +19,4 @@ mysql -e "GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';"
 mysql -e "FLUSH PRIVILEGES;"
 
 # A questo punto, fermiamo il processo mysqld_safe
-wait
+ wait

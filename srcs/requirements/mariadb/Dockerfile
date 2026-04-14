@@ -11,10 +11,10 @@ RUN apt-get update && apt-get install -y \
 
 VOLUME ["/var/lib/mysql"]
 
-COPY ../tools/entrypoint.sh /entrypoint.sh
+COPY tools/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-RUN sed -i 's/bind-address = .*/bind-address = 0.0.0.0/' \
+RUN sed -i 's/bind-address[[:space:]]*=.*/bind-address = 0.0.0.0/' \
    /etc/mysql/mariadb.conf.d/50-server.cnf
 
 ENTRYPOINT ["/entrypoint.sh"]

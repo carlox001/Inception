@@ -21,8 +21,6 @@ RUN mkdir -p /etc/nginx/ssl
 
 COPY /conf/nginx.conf /etc/nginx/conf.d
 
-COPY /tools/index.html /var/www/html
-
 COPY /tools/entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh

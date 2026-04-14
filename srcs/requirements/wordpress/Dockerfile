@@ -18,6 +18,8 @@ RUN apt-get update && \
     zip \
     unzip \
     bash \
+    netcat-openbsd \
+    dnsutils \
     libpng-dev \
     libjpeg-dev \
     libwebp-dev \
@@ -31,6 +33,9 @@ RUN apt-get update && \
     php8.1-exif \
     && rm -rf /var/lib/apt/lists/*
 
+COPY tools/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
     && chmod +x wp-cli.phar \
     && mv wp-cli.phar /usr/local/bin/wp
@@ -38,12 +43,16 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 RUN sed -i 's|listen = /run/php/php8.1-fpm.sock|listen = 9000|g' \
     /etc/php/8.1/fpm/pool.d/www.conf
 
-WORKDIR /var/www/html
+WORKDIR /var/www/
 
+RUN mkdir wordpress
+    
 RUN curl -o wordpress.tar.gz https://wordpress.org/latest.tar.gz \
-    && tar -xzf wordpress.tar.gz --strip-components=1 \
+    && tar -xzf wordpress.tar.gz --strip-components=1 -C /var/www/wordpress\
     && rm wordpress.tar.gz
     
+WORKDIR /var/www/html
+
 RUN chown -R www-data:www-data /var/www/html
     
 ENTRYPOINT ["/entrypoint.sh"]
