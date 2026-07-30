@@ -1,4 +1,6 @@
 #!/bin/bash
+export MYSQL_PASSWORD=$(cat /run/secrets/mysql_password)
+
 mkdir -p /run/mysqld
 chown mysql:mysql /run/mysqld
 set -e

@@ -7,10 +7,6 @@ RUN apt-get update && apt-get install -y \
     mariadb-client \
     && rm -rf /var/lib/apt/lists/*
 
-# COPY my.cnf /etc/mysql/my.cnf
-
-VOLUME ["/var/lib/mysql"]
-
 COPY tools/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 

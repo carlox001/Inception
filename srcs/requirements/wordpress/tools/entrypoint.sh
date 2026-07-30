@@ -1,4 +1,7 @@
 #!/bin/bash
+export DB_PASSWORD=$(cat /run/secrets/db_password)
+export WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
+export WP_PASSWORD=$(cat /run/secrets/wp_password)
 set -e
 
 echo "Starting WordPress entrypoint..."
